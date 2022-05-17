@@ -1,0 +1,16 @@
+{
+  "name": "AMZN stock ticker",
+  "description": "Show AMZN stock price in your Chrome browser",
+  "version": "0.1",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [ "alarms"],
+  "host_permissions": ["https://yh-finance.p.rapidapi.com/stock/"],
+  "action": {
+    "default_icon": {
+      "128": "amazon128.png"
+    }
+  }
+}
