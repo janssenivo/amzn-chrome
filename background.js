@@ -4,7 +4,7 @@ const YAHOO_API_KEY = ''; // put your own key here
 
 chrome.runtime.onInstalled.addListener(() => {
   updateBadge('init...');
-  chrome.alarms.create({ periodInMinutes: 1, delayInMinutes: 1});
+  chrome.alarms.create({ periodInMinutes: 30, delayInMinutes: 30});
   updateBadgeWithStockprice();
   console.log('Init complete');
 });
@@ -17,6 +17,7 @@ chrome.action.onClicked.addListener(() => {
 
 chrome.alarms.onAlarm.addListener(() => {
   console.log('Alarm triggered')
+  updateBadge('updating...');
   updateBadgeWithStockprice();
 });
 
@@ -34,13 +35,19 @@ function updateBadgeWithStockprice() {
     .then(res => res.json())
     .then(json => {
       let price = json.quoteResponse.result[0].regularMarketPrice.toFixed();
+      let prevClose = json.quoteResponse.result[0].regularMarketPreviousClose.toFixed();
       //console.log(price);
-      updateBadge(price)
+      if (price >= prevClose) {
+        updateBadge(price, "blue")
+      } else {
+        updateBadge(price,"red")
+      }
     })
     .catch(err => console.error('error:' + err));
 };
 
-function updateBadge(text) {
+function updateBadge(text, color="gray") {
+  chrome.action.setBadgeBackgroundColor({color: color});
   chrome.action.setBadgeText({text: text});
   console.log('Badge updated to '+text+' at '+new Date);    
 };
