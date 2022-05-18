@@ -6,7 +6,11 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": [ "alarms"],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "permissions": [ "alarms", "storage"],
   "host_permissions": ["https://yh-finance.p.rapidapi.com/stock/"],
   "action": {
     "default_icon": {
