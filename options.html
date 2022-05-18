@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><title>Stock Ticker Extension options</title></head>
+<body>
+
+<h2>Stock Ticker Extension options</h2>
+<p>To acquire a RAPID API KEY, see the
+<a href="https://github.com/janssenivo/amzn-chrome/blob/master/README.md" target="_blank">Readme</a>
+</p>
+
+<p>
+<form>
+  <label for="apikey">RAPID API Key:</label><br>
+  <input required type="text" id="apikey" name="apikey" size="60" placeholder="Read the README for instructions"><br>
+  <label for="interval">Update interval (minutes):</label><br>
+  <input required type="text" id="interval" name="interval" size="10" min="5"><br>
+  <label for="symbol">Stock symbol:</label><br>
+  <input required type="text" id="symbol" name="symbol" size="10" ><br>
+</form>
+</p>
+
+<p>
+<div id="status"></div>
+<button id="save">Save</button>
+</p>
+
+<script src="options.js"></script>
+</body>
+</html>
