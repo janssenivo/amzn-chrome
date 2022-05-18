@@ -6,15 +6,16 @@ chrome.runtime.onInstalled.addListener(async () => {
   updateBadge('init...');
   // load settings
   await initStorageCache;
-  settings.interval=parseInt(settings['interval']); // need int for this field
+  if (settings.interval===undefined) settings.interval="120" // undefined at first load
+  settings.interval=parseInt(settings.interval); // need int for this field
   console.log ("settings loaded: "+JSON.stringify(settings));
 
   // initial price
   updateBadgeWithStockprice();
   
   // set recurring event to update
-  chrome.alarms.create({ periodInMinutes: settings['interval'], delayInMinutes: settings['interval'] });
-  console.log('Init complete, will refresh '+settings['symbol']+' quote every '+settings['interval']+' minutes.');
+  chrome.alarms.create({ periodInMinutes: settings.interval, delayInMinutes: settings.interval });
+  console.log('Init complete, will refresh '+settings.symbol+' quote every '+settings.interval+' minutes.');
 });
 
 chrome.action.onClicked.addListener(() => { 
@@ -29,27 +30,26 @@ chrome.alarms.onAlarm.addListener(() => {
   updateBadgeWithStockprice();
 });
 
-// Reads all data out of storage.sync and exposes it via a promise.
-const initStorageCache = loadOptions().then(items => {
-  Object.assign(settings, items);
-});
-function loadOptions() {
-  return new Promise((resolve, reject) => {
-    chrome.storage.sync.get(null, (items) => {
-      if (chrome.runtime.lastError) { return reject(chrome.runtime.lastError); }
-      resolve(items);
-    });
+// Reads all data out of storage.sync
+const initStorageCache = new Promise((resolve, reject) => {
+  chrome.storage.sync.get(null, (items) => {
+    if (chrome.runtime.lastError) {
+      resolve({}); // ignore
+    }
+    resolve(items);
   });
-}
+}).then(items => {
+    Object.assign(settings, items);
+});
 
-// Make call to Yahoo Finance API via Rapid API
+// Make call to YH Finance API via Rapid API
 function updateBadgeWithStockprice() {
-  const url = 'https://yh-finance.p.rapidapi.com/market/v2/get-quotes?region=US&symbols='+settings['symbol'];
+  const url = 'https://yh-finance.p.rapidapi.com/market/v2/get-quotes?region=US&symbols='+settings.symbol;
   const options = {
     method: 'GET',
     headers: {
       'X-RapidAPI-Host': 'yh-finance.p.rapidapi.com',
-      'X-RapidAPI-Key': settings['apikey']
+      'X-RapidAPI-Key': settings.apikey
     }
   };
   
@@ -61,7 +61,7 @@ function updateBadgeWithStockprice() {
       let prevClose = stock.regularMarketPreviousClose;
       let change = stock.regularMarketChange;
       let changePercent = stock.regularMarketChangePercent;
-      let tooltip = settings['symbol']+" $"+price.toFixed(2)+" ("+change.toFixed(2)+", "+changePercent.toFixed(2)+"%)";
+      let tooltip = settings.symbol+" $"+price.toFixed(2)+" ("+change.toFixed(2)+", "+changePercent.toFixed(2)+"%)";
       //console.log(price);
       if (price >= prevClose) {
         updateBadge(price.toFixed(0), tooltip, "blue")

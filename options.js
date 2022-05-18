@@ -13,8 +13,8 @@ function save_options() {
     var status = document.getElementById('status');
     status.textContent = 'Options saved.';
     setTimeout(function() {
-      chrome.runtime.reload()
-      window.close()
+      chrome.runtime.reload();
+      window.close();
     }, 2500);
   });
 }
