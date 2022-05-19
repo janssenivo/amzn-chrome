@@ -67,9 +67,9 @@ function updateBadgeWithStockprice() {
                   +sign+Math.abs(changePercent.toFixed(2))+"%)";
       //console.log(price);
       if (price >= prevClose) {
-        updateBadge(price.toFixed(0), tooltip, "blue")
+        updateBadge(price.toFixed(0), tooltip, "#4267B2")
       } else {
-        updateBadge(price.toFixed(0), tooltip, "red")
+        updateBadge(price.toFixed(0), tooltip, "#C23030")
       }
     })
     .catch(err => {
