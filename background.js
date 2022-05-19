@@ -61,7 +61,10 @@ function updateBadgeWithStockprice() {
       let prevClose = stock.regularMarketPreviousClose;
       let change = stock.regularMarketChange;
       let changePercent = stock.regularMarketChangePercent;
-      let tooltip = settings.symbol+" $"+price.toFixed(2)+" ("+change.toFixed(2)+", "+changePercent.toFixed(2)+"%)";
+      let sign = (stock.regularMarketChange<0)?'-':'+';
+      let tooltip = settings.symbol+" $"+price.toFixed(2)+" ("+sign
+                  +"$"+Math.abs(change.toFixed(2))+", "
+                  +sign+Math.abs(changePercent.toFixed(2))+"%)";
       //console.log(price);
       if (price >= prevClose) {
         updateBadge(price.toFixed(0), tooltip, "blue")
