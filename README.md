@@ -25,3 +25,8 @@ Now configure the extension to use your new API key.
 4. Click "Save"
 
 Enjoy!
+
+
+## Screenshot example
+
+![Screenshot](screenshot.png)
