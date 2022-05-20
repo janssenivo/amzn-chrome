@@ -11,8 +11,12 @@ chrome.runtime.onInstalled.addListener(async () => {
   settings.interval=parseInt(settings.interval); // need int for this field
   console.log ("settings loaded: "+JSON.stringify(settings));
 
-  // initial price
-  updateBadgeWithStockprice();
+  // initial price if we already have an apikey configured, otherwise show hint
+  if (settings.apikey!==undefined) {
+    updateBadgeWithStockprice();
+  } else {
+    updateBadge("apikey", "Please set API Key in extension options");
+  }
   
   // set recurring event to update
   chrome.alarms.create({ periodInMinutes: settings.interval, delayInMinutes: settings.interval });
