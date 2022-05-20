@@ -23,7 +23,7 @@ function save_options() {
 function restore_options() {
   chrome.storage.sync.get({
     apikey: '',
-    interval: 120,
+    interval: 60,
     symbol: 'AMZN'
   }, function(items) {
     document.getElementById('apikey').value = items.apikey;
