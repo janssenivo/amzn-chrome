@@ -3,6 +3,7 @@
 let settings = {}; // persistent Chrome-sync storage for settings
 
 chrome.runtime.onInstalled.addListener(async () => {
+  console.log(insideTradingHours());
   updateBadge('init...');
   // load settings
   await initStorageCache;
@@ -26,8 +27,12 @@ chrome.action.onClicked.addListener(() => {
 
 chrome.alarms.onAlarm.addListener(() => {
   console.log('Alarm triggered')
-  updateBadge('');
-  updateBadgeWithStockprice();
+  if (insideTradingHours()) { // cut down on unnecessary API calls
+    updateBadge('');
+    updateBadgeWithStockprice();
+  } else {
+    console.log("outside trading hours, won't trigger update");
+  }
 });
 
 // Reads all data out of storage.sync
@@ -83,4 +88,15 @@ function updateBadge(text="", tooltip="", color="gray") {
   chrome.action.setBadgeBackgroundColor({color: color});
   chrome.action.setTitle({title: tooltip})
   console.log('Badge updated to '+text+' at '+new Date);    
+}
+
+// currently returns true for Mon-Fri 7am-5pm in US EDT (+0400)
+function insideTradingHours() {
+  var now = new Date;
+  var nyc_hour = now.getUTCHours()-4;
+  var nyc_weekday = now.getDay(); // TODO: race condition: localtz already in diff date
+  var now_inside_trading_hours = 
+    (nyc_hour > 7 && nyc_hour < 17 &&      // 7am-5pm
+     nyc_weekday != 6 && nyc_weekday != 0) // not Sat or Sun
+  return now_inside_trading_hours;
 }
