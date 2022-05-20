@@ -12,8 +12,8 @@ function save_options() {
     // update status to let user know options were saved, close window after 3 seconds
     var status = document.getElementById('status');
     status.textContent = 'Options saved.';
+    chrome.runtime.reload();
     setTimeout(function() {
-      chrome.runtime.reload();
       window.close();
     }, 2500);
   });
