@@ -52,7 +52,7 @@ const initStorageCache = new Promise((resolve, reject) => {
 });
 
 // Make call to YH Finance API via Rapid API
-function updateBadgeWithStockprice() {
+function updateBadgeWithStockprice(retry=true) {
   const url = 'https://yh-finance.p.rapidapi.com/market/v2/get-quotes?region=US&symbols='+settings.symbol;
   const options = {
     method: 'GET',
@@ -82,8 +82,14 @@ function updateBadgeWithStockprice() {
       }
     })
     .catch(err => {
-      updateBadge("failed");
       console.error('error:' + err)
+      // retry once after 60second sleep
+      if (retry) {
+        console.log('retrying one more time, sleeping 60 seconds');
+        setTimeout(function () {
+          updateBadgeWithStockprice(false);
+        }, 60000);
+      }
     });
 };
 
