@@ -1,6 +1,7 @@
 # AMZN stock ticker Chrome extension
 
 This Chrome extension simply adds an AMZN stock quote to your extension bar. Nothing more nothing less.
+Chrome webstore link is https://chrome.google.com/webstore/detail/amzn-stock-ticker/cbmpnogekngmlcgpejiiigiggklhdlij
 
 
 ## Configuration
