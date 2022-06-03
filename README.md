@@ -8,10 +8,11 @@ This Chrome extension simply adds an AMZN stock quote to your extension bar. Not
 This extension needs an API Key to the Yahoo Finance API via rapidapi.com. Here's how you can sign up for a free API key:
 
 1. Go to https://rapidapi.com/
-2. Click ["Sign-Up"](https://rapidapi.com/auth/sign-up]) in the top right corner and create a free account
+2. Click ["Sign-Up"](https://rapidapi.com/auth/sign-up) in the top right corner and create a free account
 3. Locate the [Finance / YH Finance API](https://rapidapi.com/apidojo/api/yh-finance/)
 4. Navigate to the "market/v2/get-quotes" API
 5. Click "Subscribe to test" and pick the $0.00 free plan which gives you 500 requests per month (or about 16 requests per day)
+6. Hit the back button to go back, and re-select "market/v2/get-quotes"
 6. From the right most test pane, copy the value for ```X-RapidAPI-Key```. It is a 50-character string.
 
 
