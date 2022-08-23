@@ -3,7 +3,6 @@
 let settings = {}; // persistent Chrome-sync storage for settings
 
 chrome.runtime.onInstalled.addListener(async () => {
-  console.log(insideTradingHours());
   updateBadge('init...');
   // load settings
   await initStorageCache;
@@ -52,7 +51,8 @@ const initStorageCache = new Promise((resolve, reject) => {
 });
 
 // Make call to YH Finance API via Rapid API
-function updateBadgeWithStockprice(retry=true) {
+async function updateBadgeWithStockprice(retry=true) {
+  await initStorageCache; // must load settings because service worker is most likely inactive
   const url = 'https://yh-finance.p.rapidapi.com/market/v2/get-quotes?region=US&symbols='+settings.symbol;
   const options = {
     method: 'GET',
@@ -85,10 +85,8 @@ function updateBadgeWithStockprice(retry=true) {
       console.error('error:' + err)
       // retry once after 60second sleep
       if (retry) {
-        console.log('retrying one more time, sleeping 60 seconds');
-        setTimeout(function () {
-          updateBadgeWithStockprice(false);
-        }, 60000);
+        console.log('retrying one more time');
+        updateBadgeWithStockprice(false);
       }
     });
 };
